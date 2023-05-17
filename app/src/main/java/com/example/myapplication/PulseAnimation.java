@@ -26,15 +26,24 @@ public class PulseAnimation extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        ObjectAnimator growAnimator = ObjectAnimator.ofFloat(this, "radius", 0, getWidth());
+        ObjectAnimator growAnimator = ObjectAnimator.ofFloat(
+                this, "radius", 0, getWidth());
         growAnimator.setDuration(ANIMATION_DURATION);
         growAnimator.setInterpolator(new LinearInterpolator());
         ObjectAnimator shrinkAnimator = ObjectAnimator.ofFloat(this, "radius", getWidth(), 0);
         shrinkAnimator.setDuration(ANIMATION_DURATION);
         shrinkAnimator.setInterpolator(new LinearInterpolator());
         shrinkAnimator.setStartDelay(ANIMATION_DELAY);
-        animatorSet.play(growAnimator).before(shrinkAnimator);
-
+        //Membuat repeat animation
+        ObjectAnimator repeatAnimator = ObjectAnimator.ofFloat(
+                this, "radius", 0, getWidth());
+        repeatAnimator.setStartDelay(ANIMATION_DELAY);
+        repeatAnimator.setDuration(ANIMATION_DURATION);
+        repeatAnimator.setRepeatCount(3);
+        repeatAnimator.setRepeatMode(ObjectAnimator.REVERSE);
+//        animatorSet.play(growAnimator).before(shrinkAnimator);
+//        animatorSet.play(repeatAnimator).after(shrinkAnimator);
+        animatorSet.play(repeatAnimator);
     }
 
     @Override
