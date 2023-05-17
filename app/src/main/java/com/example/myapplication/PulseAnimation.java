@@ -29,15 +29,11 @@ public class PulseAnimation extends View {
         ObjectAnimator growAnimator = ObjectAnimator.ofFloat(this, "radius", 0, getWidth());
         growAnimator.setDuration(ANIMATION_DURATION);
         growAnimator.setInterpolator(new LinearInterpolator());
-
         ObjectAnimator shrinkAnimator = ObjectAnimator.ofFloat(this, "radius", getWidth(), 0);
         shrinkAnimator.setDuration(ANIMATION_DURATION);
         shrinkAnimator.setInterpolator(new LinearInterpolator());
         shrinkAnimator.setStartDelay(ANIMATION_DELAY);
-
         animatorSet.play(growAnimator).before(shrinkAnimator);
-
-
 
     }
 
@@ -45,17 +41,18 @@ public class PulseAnimation extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawCircle(x,y,radius,paint);
-        if (animatorSet != null && animatorSet.isRunning()){
-            animatorSet.cancel();
-        }
-        animatorSet.start();
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN){
             x = event.getX();
             y = event.getY();
+            if (animatorSet != null && animatorSet.isRunning()){
+                animatorSet.cancel();
+            }
+            animatorSet.start();
         }
         return super.onTouchEvent(event);
     }
